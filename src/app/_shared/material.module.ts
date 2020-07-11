@@ -7,8 +7,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
   imports: [
     MatButtonModule,
@@ -20,6 +22,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatDividerModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    MatProgressBarModule,
     FlexLayoutModule,
   ],
   declarations: [],
@@ -32,6 +36,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatDividerModule,
     MatToolbarModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    MatProgressBarModule,
     FlexLayoutModule,
   ],
 })

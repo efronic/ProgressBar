@@ -1,13 +1,12 @@
 
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { Button } from '../_models/button';
-import { Bar } from '../_models/bar';
+
 import { Structure } from '../_models/structure';
 
 export interface AppState {
   structure: Structure;
-  buttons: Button[];
-  bars: Bar[];
+  buttons: number[];
+  bars: number[];
   limit: number;
   isLoading: boolean;
   error: string;

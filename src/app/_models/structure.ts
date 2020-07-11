@@ -1,8 +1,7 @@
-import { Button } from "./button";
-import { Bar } from "./bar";
+
 
 export interface Structure{
-buttons: Button[],
-bars: Bar[],
+buttons: number[],
+bars: number[],
 limit: number
 }

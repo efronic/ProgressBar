@@ -15,10 +15,41 @@
       >
     </mat-toolbar-row>
   </mat-toolbar>
+  <div class="pBars" fxLayout="column" fxLayoutGap="40px">
+    <mat-progress-bar
+      mode="determinate"
+      *ngFor="let bar of this.bars$ | async; let i = index"
+      value="{{ bar }}"
+      
+    >
+      {{ bar }}</mat-progress-bar
+    >
+  </div>
 
-<ul>
-  <li *ngFor="let bar of (bars$ | async)">{{bar}}</li>
-  <li *ngFor="let button of (buttons$ | async)">{{button}}</li>
-</ul>
+  <mat-form-field id="applicantSelect" appearance="outline">
+    <mat-label>Progress bar</mat-label>
+    <mat-icon matPrefix>person</mat-icon>
+    <mat-select
+      [(value)]="selectedProgressBar"
+      placeholder="Select progress bar"
+    >
+      <mat-option
+        *ngFor="let a of this.bars$ | async; let i = index"
+        [value]="i"
+      >
+        Progress Bar {{ i }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayout fxLayoutGap="40px" fxLayoutAlign="space-around">
+    <div *ngFor="let button of buttons$ | async; let i = index">
+      <button
+        mat-raised-button
+        (click)="onClick(button)"
+        [disabled]="this.selectedProgressBar === -1"
+      >
+        {{ button }}
+      </button>
+    </div>
+  </div>
 </section>
-
