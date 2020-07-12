@@ -16,7 +16,7 @@ export class AppService {
   getStructure(): Observable<Structure> {
     console.log('baseurl', this.baseUrl);
 
-    return this.http.get<any>(this.baseUrl);
+    return this.http.get<Structure>(this.baseUrl);
   }
 
 

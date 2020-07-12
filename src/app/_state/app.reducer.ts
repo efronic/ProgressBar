@@ -17,9 +17,9 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
       return {
         ...state,
         structure: { ...action.payload },
-        bars: {...action.payload}.bars,
-        buttons: {...action.payload}.buttons,
-        limit: {...action.payload}.limit,
+        bars: { ...action.payload }.bars,
+        buttons: { ...action.payload }.buttons,
+        limit: { ...action.payload }.limit,
         isLoading: false,
       };
     case ActionTypes.LoadFail:
@@ -31,8 +31,13 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
         limit: initialState.limit,
         isLoading: false,
       };
+    case ActionTypes.UpdateBars:
+      return {
+        ...state,
+        bars: [...action.payload],
+        isLoading: false,
+      };
     default:
       break;
   }
 }
-
