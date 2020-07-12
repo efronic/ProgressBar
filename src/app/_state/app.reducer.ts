@@ -1,5 +1,6 @@
 import { initialState, AppState } from './app.state';
 import { AppActions, ActionTypes } from './app.actions';
+import { Bar } from '../_models/bar';
 
 export function AppReducer(state = initialState, action: AppActions): AppState {
   switch (action.type) {
@@ -17,7 +18,12 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
       return {
         ...state,
         structure: { ...action.payload },
-        bars: { ...action.payload }.bars,
+        bars: [
+          ...{ ...action.payload }.bars.map((p) => {
+            let newBar: Bar = { value: p, newValue: p };
+            return newBar;
+          }),
+        ],
         buttons: { ...action.payload }.buttons,
         limit: { ...action.payload }.limit,
         isLoading: false,
@@ -31,12 +37,12 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
         limit: initialState.limit,
         isLoading: false,
       };
-    case ActionTypes.UpdateBars:
-      return {
-        ...state,
-        bars: [...action.payload],
-        isLoading: false,
-      };
+    // case ActionTypes.UpdateBars:
+    //   return {
+    //     ...state,
+    //     bars: [...action.payload],
+    //     isLoading: false,
+    //   };
     default:
       break;
   }

@@ -1,12 +1,12 @@
-
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { Structure } from '../_models/structure';
+import { Bar } from '../_models/bar';
 
 export interface AppState {
   structure: Structure;
   buttons: number[];
-  bars: number[];
+  bars: Bar[];
   limit: number;
   isLoading: boolean;
   error: string;
@@ -21,12 +21,12 @@ export const initialState: AppState = {
 };
 const getState = createFeatureSelector<AppState>('progressBar');
 export const getButtons = createSelector(getState, (state) => state.buttons);
-export const getStructure = createSelector(getState, (state) => state.structure);
-
-export const getBars = createSelector(
+export const getStructure = createSelector(
   getState,
-  (state) => state.bars
+  (state) => state.structure
 );
+
+export const getBars = createSelector(getState, (state) => state.bars);
 export const getLimit = createSelector(getState, (state) => state.limit);
 export const getIsLoading = createSelector(
   getState,

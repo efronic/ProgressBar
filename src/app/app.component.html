@@ -1,59 +1,67 @@
-<section fxLayout="column" fxLayoutAlign="center">
-  <app-loader [loading]="this.loading$ | async"></app-loader>
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
-      <span>Progress Bar Quiz</span>
-      <span class="example-spacer"></span>
-      <a href="https://github.com/efronic/ProgressBar">
-        <mat-icon
-          class="example-icon"
-          aria-hidden="false"
-          aria-label="Example user verified icon"
-          style="color: white;"
-          >mood</mat-icon
-        ></a
-      >
-    </mat-toolbar-row>
-  </mat-toolbar>
-  <div
-    class="pBars"
-    fxLayout="column"
-    fxLayoutGap="40px"
-    *ngIf="(this.bars$ | async) && (this.bars$ | async).length > 0"
-  >
-    <mat-progress-bar
-      mode="determinate"
-      *ngFor="let bar of this.bars$ | async; let i = index"
-      value="{{ bar }}"
-    >
-      {{ bar }}</mat-progress-bar
-    >
-  </div>
+<app-loader [loading]="this.loading$ | async"></app-loader>
 
-  <mat-form-field id="barSelect" appearance="outline">
-    <mat-label>Progress bar</mat-label>
-    <mat-icon matPrefix>person</mat-icon>
-    <mat-select
-      placeholder="Select progress bar"
-      (selectionChange)="onSelected($event)"
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Progress Bar Quiz</span>
+    <span class="example-spacer"></span>
+    <a href="https://github.com/efronic/ProgressBar">
+      <mat-icon
+        class="example-icon"
+        aria-hidden="false"
+        aria-label="Example user verified icon"
+        style="color: white;"
+        >mood</mat-icon
+      ></a
     >
-      <mat-option
-        *ngFor="let bar of this.bars$ | async; let i = index"
-        [value]="i"
-      >
-        Progress Bar {{ i }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div fxLayout fxLayoutGap="40px" fxLayoutAlign="space-around">
-    <div *ngFor="let button of buttons$ | async; let i = index">
-      <button
-        mat-raised-button
-        (click)="onClick(button)"
-        [disabled]="this.selectedProgressBar === -1"
-      >
-        {{ button }}
-      </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<section fxLayout fxLayoutAlign="center">
+  <mat-card fxFlex="50" fxFlex.md="50" fxFlex.sm="100" fxFlex.xs="100">
+    <div
+      class="pBars"
+      fxLayout="column"
+      fxLayoutGap="40px"
+      *ngIf="this.bars && this.bars.length > 0"
+    >
+      <div fxLayout="row" *ngFor="let bar of this.bars; let i = index">
+        <mat-progress-bar
+          mode="determinate"
+          value="{{ bar.newValue }}"
+          fxFlex="90"
+          style="margin-top: 10px;"
+          [color]="bar.value > this.limit ? 'accent' : 'primary'"
+        >
+          {{ bar.newValue }}</mat-progress-bar
+        >
+        <div fxFlex="10" fxLayoutAlign="center">
+          {{ bar.value }}
+        </div>
+      </div>
     </div>
-  </div>
+
+    <mat-form-field id="barSelect" appearance="outline">
+      <mat-label>Progress bar</mat-label>
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-select
+        placeholder="Select progress bar"
+        (selectionChange)="onSelected($event)"
+      >
+        <mat-option *ngFor="let bar of this.bars; let i = index" [value]="i">
+          Progress Bar {{ i + 1 }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div fxLayout fxLayoutGap="40px" fxLayoutAlign="space-around">
+      <div *ngFor="let button of buttons$ | async; let i = index">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onClick(button)"
+          [disabled]="this.selectedProgressBar === -1"
+        >
+          {{ button }}
+        </button>
+      </div>
+    </div>
+  </mat-card>
 </section>

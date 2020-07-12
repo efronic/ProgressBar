@@ -1,4 +1,4 @@
 export interface KeyValuePair {
-  id?: number;
   value: number;
+  newValue: number;
 }
