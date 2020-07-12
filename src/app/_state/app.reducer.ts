@@ -15,12 +15,16 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
         isLoading: true,
       };
     case ActionTypes.LoadSuccess:
+      const limit = { ...action.payload }.limit;
       return {
         ...state,
         structure: { ...action.payload },
         bars: [
           ...{ ...action.payload }.bars.map((p) => {
-            let newBar: Bar = { value: p, newValue: p };
+            const newValue = Math.round(p * 100) / limit;
+
+            const newBar: Bar = { value: p, newValue: newValue };
+
             return newBar;
           }),
         ],
@@ -37,12 +41,7 @@ export function AppReducer(state = initialState, action: AppActions): AppState {
         limit: initialState.limit,
         isLoading: false,
       };
-    // case ActionTypes.UpdateBars:
-    //   return {
-    //     ...state,
-    //     bars: [...action.payload],
-    //     isLoading: false,
-    //   };
+
     default:
       break;
   }
