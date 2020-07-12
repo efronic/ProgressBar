@@ -6,6 +6,7 @@ import { takeWhile } from 'rxjs/operators';
 import * as fromAppState from './_state/app.state';
 import * as fromAppActions from './_state/app.actions';
 import { Bar } from './_models/bar';
+import { MatSelectChange } from '@angular/material/select';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
       takeWhile(() => this.componentActive)
     );
   }
-  onSelected(event: any) {
+  onSelected(event: MatSelectChange) {
     this.selectedProgressBar = event.value;
   }
 
