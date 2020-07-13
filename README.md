@@ -3,10 +3,10 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.2.
 Some of the app's features:
 
-Use of state management pattern - NgRx
-Angular Material components
-RxJS
-Responsive - Angular Flex Layout
+- Use of state management pattern - NgRx
+- Angular Material components
+- RxJS
+- Responsive - Angular Flex Layout
 
 ## Prerequisites
 
