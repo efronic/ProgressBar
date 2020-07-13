@@ -1,13 +1,16 @@
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MaterialModule } from './_shared/material.module';
 import { AppComponent } from './app.component';
+import { getBars } from './_state/app.state';
+import { Input, Component } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { Structure } from './_models/structure';
 import { Bar } from './_models/bar';
-import { MaterialModule } from './_shared/material.module';
-import { of, Observable, observable } from 'rxjs';
-import { Store, StoreModule } from '@ngrx/store';
 import { By } from '@angular/platform-browser';
-import { Input, Component } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 
 describe('AppComponent', () => {
   @Component({
@@ -18,7 +21,7 @@ describe('AppComponent', () => {
     @Input() loading: boolean;
   }
   let component: AppComponent;
-  const storeMock = jasmine.createSpyObj('Store', ['select']);
+  let store: MockStore;
   let buttons$: Observable<number[]> = of([45, 23, -8, -12]);
   let loading$: Observable<boolean> = of(true);
   let structure: Structure = {
@@ -32,45 +35,22 @@ describe('AppComponent', () => {
     { value: 7, newValue: Math.round(7 * 100) / 150 },
     { value: 87, newValue: Math.round(87 * 100) / 150 },
   ];
-  // const storeMock = {
-  //   select() {
-  //     return of({
-  //       structure: structure,
-  //       buttons: [45, 23, -8, -12],
-  //       bars: [15, 34, 7, 87],
-  //       limit: 150,
-  //       isLoading: false,
-  //       error: '',
-  //     });
-  //   },
-  // };
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    storeMock.select.and.returnValue(
-      of({
-        structure: structure,
-        buttons: [45, 23, -8, -12],
-        bars: [15, 34, 7, 87],
-        limit: 150,
-        isLoading: false,
-        error: '',
-      })
-    );
-    component = fixture.componentInstance;
-
+    // fixture = TestBed.createComponent(AppComponent);
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        MaterialModule,
-        StoreModule.forRoot({}, {}),
-      ],
-      declarations: [AppComponent, FakeLoaderComponent],
-      providers: [{ provide: Store, useValue: storeMock }],
+      imports: [RouterTestingModule, NoopAnimationsModule, MaterialModule],
+      providers: [provideMockStore()],
+      declarations: [AppComponent],
     }).compileComponents();
+    // component = fixture.componentInstance;
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(getBars, []);
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.debugElement.componentInstance;
     component.bars = barsObject;
     component.limit = structure.limit;
-    component.selectedProgressBar = -1;
+    component.selectedProgressBar = 10;
     component.componentActive = true;
     component.buttons$ = buttons$;
     component.loading$ = loading$;
@@ -86,35 +66,28 @@ describe('AppComponent', () => {
 
     expect(component.title).toEqual('Progress Bar Quiz');
   });
-  // it(`should have as title 'ProgressBar'`, () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   const app = fixture.componentInstance;
-  //   expect(app.title).toEqual('ProgressBar');
-  // });
-  it('buttons should be disabled', () => {
+
+  it('should show value = 45 ', () => {
     fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    let el = fixture.debugElement.query(By.css('button')).nativeElement
-      .disabled;
-    expect(el).toBeTruthy();
+
+    component.onSelected(new MatSelectChange(null, 45));
+
+    expect(component.selectedProgressBar).toBe(45);
   });
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain(
-      'ProgressBar app is running!'
-    );
-  });
-  it('should show value = 60 ', () => {
+  it('should show value = 79 ', () => {
     fixture = TestBed.createComponent(AppComponent);
-    let event = { value: 45 };
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    let el = fixture.debugElement
-      .query(By.css('.mat-select'))
-      .triggerEventHandler('selectionChange', event);
-    expect(component.selectedProgressBar).toBe(60);
+    component.selectedProgressBar = 1
+
+    component.onClick(45);
+
+    expect(component.bars[component.selectedProgressBar].value).toBe(79);
+  });
+  it('should show value = 40 ', () => {
+    fixture = TestBed.createComponent(AppComponent);
+    component.selectedProgressBar = 0
+
+    component.onClick(45);
+
+    expect(component.bars[component.selectedProgressBar].newValue).toBe(40);
   });
 });
